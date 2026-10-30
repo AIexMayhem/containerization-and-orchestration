@@ -1,0 +1,143 @@
+{
+  "_provenance": {
+    "description": "Экспорт проверенного контекста из успешного исполнения n8n №21.",
+    "execution_id": "21",
+    "source_node": "Require complete context",
+    "gate_status": "success",
+    "saved_automatically_by_workflow": false
+  },
+  "collection": {
+    "outcome": "complete",
+    "missing_documents": [],
+    "errors": [],
+    "reviewed_documents": [
+      {
+        "document_id": "technical-spec",
+        "document_version": "v1"
+      },
+      {
+        "document_id": "draft-contract",
+        "document_version": "v1"
+      }
+    ],
+    "sources": {
+      "policy": {
+        "policy_id": "tender-precheck",
+        "policy_version": "v1",
+        "synthetic": true,
+        "all_package_documents_required": true,
+        "criteria": [
+          {
+            "criterion_id": "support_schedule",
+            "description": "Сопоставить требуемый режим поддержки с доступным режимом компании.",
+            "missing_information_status": "needs_clarification",
+            "evidence_required": "Для вывода о соответствии или несоответствии нужны ссылки на требование заказчика и профиль компании."
+          },
+          {
+            "criterion_id": "response_time",
+            "description": "Найти срок реакции на обращение в полном пакете документов заказчика. Проверять отдельно от режима поддержки.",
+            "missing_information_status": "needs_clarification",
+            "evidence_required": "Для найденного срока указать документ и раздел. Если срок не найден, указать полный перечень проверенных документов."
+          }
+        ],
+        "rules": [
+          "Не подставлять условия похожих проектов вместо требований текущего заказчика.",
+          "Недоступный обязательный документ означает незавершённую проверку, а не отсутствие требования.",
+          "Наличие поддержки 24×7 само по себе не устанавливает срок реакции на обращение."
+        ]
+      },
+      "company": {
+        "company_id": "demo-integrator",
+        "profile_version": "v1",
+        "synthetic": true,
+        "name": "Учебный ИТ-интегратор",
+        "support_schedule": {
+          "timezone": "Europe/Moscow",
+          "days": [
+            "monday",
+            "tuesday",
+            "wednesday",
+            "thursday",
+            "friday"
+          ],
+          "start": "09:00",
+          "end": "18:00",
+          "outside_schedule_available": false
+        }
+      },
+      "package": {
+        "tender_id": "demo-tender",
+        "package_version": "v1",
+        "documents": [
+          {
+            "document_id": "technical-spec",
+            "document_version": "v1",
+            "required": true
+          },
+          {
+            "document_id": "draft-contract",
+            "document_version": "v1",
+            "required": true
+          }
+        ]
+      },
+      "documents": [
+        {
+          "tender_id": "demo-tender",
+          "package_version": "v1",
+          "document_id": "technical-spec",
+          "document_version": "v1",
+          "text": "# Техническое задание\n\nДокумент: technical-spec. Версия: v1. Пакет: demo-tender/v1.\nСинтетический документ для учебного эксперимента.\n\n## TS-1. Предмет работ\n\nИсполнитель обеспечивает сопровождение внутреннего веб-приложения заказчика: приём обращений, диагностику неисправностей и восстановление работоспособности.\n\n## TS-2. Режим поддержки\n\nПриём и обработка обращений инженерами поддержки должны быть доступны круглосуточно, семь дней в неделю, включая праздничные дни: 24×7.\n",
+          "sections": [
+            {
+              "section_id": "TS-1",
+              "title": "Предмет работ",
+              "text": "Исполнитель обеспечивает сопровождение внутреннего веб-приложения заказчика: приём обращений, диагностику неисправностей и восстановление работоспособности.",
+              "source_ref": "technical-spec/v1#TS-1"
+            },
+            {
+              "section_id": "TS-2",
+              "title": "Режим поддержки",
+              "text": "Приём и обработка обращений инженерами поддержки должны быть доступны круглосуточно, семь дней в неделю, включая праздничные дни: 24×7.",
+              "source_ref": "technical-spec/v1#TS-2"
+            }
+          ]
+        },
+        {
+          "tender_id": "demo-tender",
+          "package_version": "v1",
+          "document_id": "draft-contract",
+          "document_version": "v1",
+          "text": "# Проект договора\n\nДокумент: draft-contract. Версия: v1. Пакет: demo-tender/v1.\nСинтетический документ для учебного эксперимента.\n\n## CT-1. Обязанности сторон\n\nИсполнитель оказывает услуги сопровождения в соответствии с техническим заданием. Заказчик предоставляет доступ к сопровождаемому приложению и назначает ответственного сотрудника для взаимодействия.\n\n## CT-2. Учёт оказанных услуг\n\nИсполнитель ведёт журнал обращений и ежемесячно передаёт заказчику отчёт с перечнем выполненных работ. Заказчик рассматривает отчёт и направляет замечания по его содержанию.\n",
+          "sections": [
+            {
+              "section_id": "CT-1",
+              "title": "Обязанности сторон",
+              "text": "Исполнитель оказывает услуги сопровождения в соответствии с техническим заданием. Заказчик предоставляет доступ к сопровождаемому приложению и назначает ответственного сотрудника для взаимодействия.",
+              "source_ref": "draft-contract/v1#CT-1"
+            },
+            {
+              "section_id": "CT-2",
+              "title": "Учёт оказанных услуг",
+              "text": "Исполнитель ведёт журнал обращений и ежемесячно передаёт заказчику отчёт с перечнем выполненных работ. Заказчик рассматривает отчёт и направляет замечания по его содержанию.",
+              "source_ref": "draft-contract/v1#CT-2"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "telemetry": {
+    "start": {
+      "workflow": "tender-precheck",
+      "execution_id": "21",
+      "started_at": 1793388175.169
+    },
+    "finish": {
+      "workflow": "tender-precheck",
+      "execution_id": "21",
+      "finished_at": 1793388241.036,
+      "outcome": "complete"
+    }
+  }
+}

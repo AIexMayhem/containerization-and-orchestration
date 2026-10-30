@@ -1,0 +1,23 @@
+image:
+  repository: jaegertracing/jaeger
+  tag: "2.22.0"
+  pullPolicy: IfNotPresent
+
+# This is a trace-count limit, not a byte limit. Old traces are evicted.
+storage:
+  maxTraces: 5000
+
+# Reject new spans before approaching the container's 512 MiB limit.
+memoryLimiter:
+  limitMiB: 384
+  spikeLimitMiB: 96
+
+goMemoryLimit: 400MiB
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: "1"
+    memory: 512Mi

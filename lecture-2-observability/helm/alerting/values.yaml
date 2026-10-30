@@ -1,0 +1,30 @@
+karma:
+  image:
+    repository: ghcr.io/prymitive/karma
+    tag: v0.134
+    pullPolicy: IfNotPresent
+  alertmanager:
+    name: lab2
+    uri: http://prometheus-alertmanager.default.svc.cluster.local:9093
+  resources:
+    requests:
+      cpu: 25m
+      memory: 64Mi
+    limits:
+      cpu: 250m
+      memory: 192Mi
+
+receiver:
+  image:
+    repository: lab2-api
+    tag: "1.0"
+    pullPolicy: IfNotPresent
+  historyLimit: 100
+  maxBodyBytes: 65536
+  resources:
+    requests:
+      cpu: 10m
+      memory: 32Mi
+    limits:
+      cpu: 200m
+      memory: 128Mi

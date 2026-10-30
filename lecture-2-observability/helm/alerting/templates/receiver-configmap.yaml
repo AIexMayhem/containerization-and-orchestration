@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: lab2-alert-receiver
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/name: lab2-alert-receiver
+    {{- include "lab2-alerting.labels" . | nindent 4 }}
+data:
+  receiver.py: |
+    {{- .Files.Get "files/receiver.py" | nindent 4 }}

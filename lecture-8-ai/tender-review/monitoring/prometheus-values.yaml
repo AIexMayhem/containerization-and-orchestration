@@ -1,0 +1,10 @@
+# prometheus-community/prometheus 29.40.0
+# Add this job to the chart's existing scrape configuration.
+extraScrapeConfigs: |
+  - job_name: lab8-tender-exporter
+    scrape_interval: 15s
+    scrape_timeout: 5s
+    metrics_path: /metrics
+    static_configs:
+      - targets:
+          - host.docker.internal:9108

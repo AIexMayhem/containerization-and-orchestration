@@ -1,0 +1,51 @@
+# For grafana-community/grafana 14.2.0. Admin credentials are intentionally absent.
+datasources:
+  datasources.yaml:
+    apiVersion: 1
+    deleteDatasources:
+      - name: alertmanager
+        orgId: 1
+    datasources:
+      - name: prometheus
+        uid: ag2s37g30s45ce
+        type: prometheus
+        access: proxy
+        url: http://prometheus-server.default.svc.cluster.local:80
+        isDefault: true
+        editable: true
+        jsonData:
+          timeInterval: 1m
+          httpMethod: POST
+      - name: loki
+        uid: bg2s8fcynp79cf
+        type: loki
+        access: proxy
+        url: http://loki-gateway.monitoring.svc.cluster.local:80
+        editable: true
+        jsonData:
+          derivedFields:
+            - name: trace_id
+              matcherRegex: '"trace_id"\s*:\s*"([0-9a-f]{32})"'
+              datasourceUid: lab2-jaeger
+              url: '$${__value.raw}'
+              urlDisplayLabel: Open trace in Jaeger
+      - name: jaeger
+        uid: lab2-jaeger
+        type: jaeger
+        access: proxy
+        url: http://lab2-jaeger.monitoring.svc.cluster.local:16686
+        editable: true
+
+dashboardProviders:
+  dashboardproviders.yaml:
+    apiVersion: 1
+    providers:
+      - name: default
+        orgId: 1
+        folder: Lab 2
+        type: file
+        disableDeletion: false
+        editable: true
+        allowUiUpdates: true
+        options:
+          path: /var/lib/grafana/dashboards/default

@@ -1,0 +1,51 @@
+{
+  "execution_id": "15",
+  "workflow_id": "Mb4DZbm6VhtMnFlg",
+  "note": "Actual recorded MCP source observations from n8n execution15. Model output, messageLog and reasoning omitted.",
+  "intermediateSteps": [
+    {
+      "action": {
+        "tool": "MCP_Client1_get_evaluation_policy",
+        "toolInput": {
+          "policy_id": "tender-precheck",
+          "policy_version": "v1",
+          "tool": "MCP_Client1_get_evaluation_policy"
+        }
+      },
+      "observation": "[{\"response\":[{\"type\":\"text\",\"text\":\"{\\n  \\\"policy_id\\\": \\\"tender-precheck\\\",\\n  \\\"policy_version\\\": \\\"v1\\\",\\n  \\\"synthetic\\\": true,\\n  \\\"all_package_documents_required\\\": true,\\n  \\\"criteria\\\": [\\n    {\\n      \\\"criterion_id\\\": \\\"support_schedule\\\",\\n      \\\"description\\\": \\\"Сопоставить требуемый режим поддержки с доступным режимом компании.\\\",\\n      \\\"missing_information_status\\\": \\\"needs_clarification\\\",\\n      \\\"evidence_required\\\": \\\"Для вывода о соответствии или несоответствии нужны ссылки на требование заказчика и профиль компании.\\\"\\n    },\\n    {\\n      \\\"criterion_id\\\": \\\"response_time\\\",\\n      \\\"description\\\": \\\"Найти срок реакции на обращение в полном пакете документов заказчика. Проверять отдельно от режима поддержки.\\\",\\n      \\\"missing_information_status\\\": \\\"needs_clarification\\\",\\n      \\\"evidence_required\\\": \\\"Для найденного срока указать документ и раздел. Если срок не найден, указать полный перечень проверенных документов.\\\"\\n    }\\n  ],\\n  \\\"rules\\\": [\\n    \\\"Не подставлять условия похожих проектов вместо требований текущего заказчика.\\\",\\n    \\\"Недоступный обязательный документ означает незавершённую проверку, а не отсутствие требования.\\\",\\n    \\\"Наличие поддержки 24×7 само по себе не устанавливает срок реакции на обращение.\\\"\\n  ]\\n}\"}],\"structuredContent\":{\"policy_id\":\"tender-precheck\",\"policy_version\":\"v1\",\"synthetic\":true,\"all_package_documents_required\":true,\"criteria\":[{\"criterion_id\":\"support_schedule\",\"description\":\"Сопоставить требуемый режим поддержки с доступным режимом компании.\",\"missing_information_status\":\"needs_clarification\",\"evidence_required\":\"Для вывода о соответствии или несоответствии нужны ссылки на требование заказчика и профиль компании.\"},{\"criterion_id\":\"response_time\",\"description\":\"Найти срок реакции на обращение в полном пакете документов заказчика. Проверять отдельно от режима поддержки.\",\"missing_information_status\":\"needs_clarification\",\"evidence_required\":\"Для найденного срока указать документ и раздел. Если срок не найден, указать полный перечень проверенных документов.\"}],\"rules\":[\"Не подставлять условия похожих проектов вместо требований текущего заказчика.\",\"Недоступный обязательный документ означает незавершённую проверку, а не отсутствие требования.\",\"Наличие поддержки 24×7 само по себе не устанавливает срок реакции на обращение.\"]}}]"
+    },
+    {
+      "action": {
+        "tool": "MCP_Client1_get_company_profile",
+        "toolInput": {
+          "company_id": "demo-integrator",
+          "profile_version": "v1",
+          "tool": "MCP_Client1_get_company_profile"
+        }
+      },
+      "observation": "[{\"response\":[{\"type\":\"text\",\"text\":\"{\\n  \\\"company_id\\\": \\\"demo-integrator\\\",\\n  \\\"profile_version\\\": \\\"v1\\\",\\n  \\\"synthetic\\\": true,\\n  \\\"name\\\": \\\"Учебный ИТ-интегратор\\\",\\n  \\\"support_schedule\\\": {\\n    \\\"timezone\\\": \\\"Europe/Moscow\\\",\\n    \\\"days\\\": [\\n      \\\"monday\\\",\\n      \\\"tuesday\\\",\\n      \\\"wednesday\\\",\\n      \\\"thursday\\\",\\n      \\\"friday\\\"\\n    ],\\n    \\\"start\\\": \\\"09:00\\\",\\n    \\\"end\\\": \\\"18:00\\\",\\n    \\\"outside_schedule_available\\\": false\\n  }\\n}\"}],\"structuredContent\":{\"company_id\":\"demo-integrator\",\"profile_version\":\"v1\",\"synthetic\":true,\"name\":\"Учебный ИТ-интегратор\",\"support_schedule\":{\"timezone\":\"Europe/Moscow\",\"days\":[\"monday\",\"tuesday\",\"wednesday\",\"thursday\",\"friday\"],\"start\":\"09:00\",\"end\":\"18:00\",\"outside_schedule_available\":false}}}]"
+    },
+    {
+      "action": {
+        "tool": "MCP_Client_list_tender_documents",
+        "toolInput": {
+          "tender_id": "demo-tender",
+          "package_version": "v1",
+          "tool": "MCP_Client_list_tender_documents"
+        }
+      },
+      "observation": "[{\"response\":[{\"type\":\"text\",\"text\":\"{\\n  \\\"tender_id\\\": \\\"demo-tender\\\",\\n  \\\"package_version\\\": \\\"v1\\\",\\n  \\\"documents\\\": [\\n    {\\n      \\\"document_id\\\": \\\"technical-spec\\\",\\n      \\\"document_version\\\": \\\"v1\\\",\\n      \\\"required\\\": true\\n    },\\n    {\\n      \\\"document_id\\\": \\\"draft-contract\\\",\\n      \\\"document_version\\\": \\\"v1\\\",\\n      \\\"required\\\": true\\n    }\\n  ]\\n}\"}],\"structuredContent\":{\"tender_id\":\"demo-tender\",\"package_version\":\"v1\",\"documents\":[{\"document_id\":\"technical-spec\",\"document_version\":\"v1\",\"required\":true},{\"document_id\":\"draft-contract\",\"document_version\":\"v1\",\"required\":true}]}}]"
+    },
+    {
+      "action": {
+        "tool": "MCP_Client_read_tender_document",
+        "toolInput": {
+          "document_id": "technical-spec",
+          "document_version": "v1",
+          "tool": "MCP_Client_read_tender_document"
+        }
+      },
+      "observation": "[{\"response\":[{\"type\":\"text\",\"text\":\"{\\n  \\\"tender_id\\\": \\\"demo-tender\\\",\\n  \\\"package_version\\\": \\\"v1\\\",\\n  \\\"document_id\\\": \\\"technical-spec\\\",\\n  \\\"document_version\\\": \\\"v1\\\",\\n  \\\"text\\\": \\\"# Техническое задание\\\\n\\\\nДокумент: technical-spec. Версия: v1. Пакет: demo-tender/v1.\\\\nСинтетический документ для учебного эксперимента.\\\\n\\\\n## TS-1. Предмет работ\\\\n\\\\nИсполнитель обеспечивает сопровождение внутреннего веб-приложения заказчика: приём обращений, диагностику неисправностей и восстановление работоспособности.\\\\n\\\\n## TS-2. Режим поддержки\\\\n\\\\nПриём и обработка обращений инженерами поддержки должны быть доступны круглосуточно, семь дней в неделю, включая праздничные дни: 24×7.\\\\n\\\",\\n  \\\"sections\\\": [\\n    {\\n      \\\"section_id\\\": \\\"TS-1\\\",\\n      \\\"title\\\": \\\"Предмет работ\\\",\\n      \\\"text\\\": \\\"Исполнитель обеспечивает сопровождение внутреннего веб-приложения заказчика: приём обращений, диагностику неисправностей и восстановление работоспособности.\\\",\\n      \\\"source_ref\\\": \\\"technical-spec/v1#TS-1\\\"\\n    },\\n    {\\n      \\\"section_id\\\": \\\"TS-2\\\",\\n      \\\"title\\\": \\\"Режим поддержки\\\",\\n      \\\"text\\\": \\\"Приём и обработка обращений инженерами поддержки должны быть доступны круглосуточно, семь дней в неделю, включая праздничные дни: 24×7.\\\",\\n      \\\"source_ref\\\": \\\"technical-spec/v1#TS-2\\\"\\n    }\\n  ]\\n}\"}],\"structuredContent\":{\"tender_id\":\"demo-tender\",\"package_version\":\"v1\",\"document_id\":\"technical-spec\",\"document_version\":\"v1\",\"text\":\"# Техническое задание\\n\\nДокумент: technical-spec. Версия: v1. Пакет: demo-tender/v1.\\nСинтетический документ для учебного эксперимента.\\n\\n## TS-1. Предмет работ\\n\\nИсполнитель обеспечивает сопровождение внутреннего веб-приложения заказчика: приём обращений, диагностику неисправностей и восстановление работоспособности.\\n\\n## TS-2. Режим поддержки\\n\\nПриём и обработка обращений инженерами поддержки должны быть доступны круглосуточно, семь дней в неделю, включая праздничные дни: 24×7.\\n\",\"sections\":[{\"section_id\":\"TS-1\",\"title\":\"Предмет работ\",\"text\":\"Исполнитель обеспечивает сопровождение внутреннего веб-приложения заказчика: приём обращений, диагностику неисправностей и восстановление работоспособности.\",\"source_ref\":\"technical-spec/v1#TS-1\"},{\"section_id\":\"TS-2\",\"title\":\"Режим поддержки\",\"text\":\"Приём и обработка обращений инженерами поддержки должны быть доступны круглосуточно, семь дней в неделю, включая праздничные дни: 24×7.\",\"source_ref\":\"technical-spec/v1#TS-2\"}]}}]"
+    }
+  ]
+}

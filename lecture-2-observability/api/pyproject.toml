@@ -1,0 +1,32 @@
+[project]
+name = "lab2-api"
+version = "0.1.0"
+description = "FastAPI service for the observability lab"
+requires-python = ">=3.13,<3.14"
+dependencies = [
+    "fastapi>=0.115,<1",
+    "httpx2>=2.16,<3",
+    "opentelemetry-api>=1.31,<2",
+    "opentelemetry-sdk>=1.31,<2",
+    "opentelemetry-exporter-otlp-proto-http>=1.31,<2",
+    "opentelemetry-instrumentation-fastapi>=0.52b0,<1",
+    "opentelemetry-instrumentation-httpx>=0.52b0,<1",
+    "prometheus-client>=0.21,<1",
+    "uvicorn>=0.34,<1",
+]
+
+[dependency-groups]
+dev = ["pytest>=8,<10", "ruff>=0.11,<1"]
+
+[tool.uv]
+package = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.ruff]
+target-version = "py313"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP"]

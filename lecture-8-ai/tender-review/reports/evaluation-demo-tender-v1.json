@@ -1,0 +1,40 @@
+{
+  "tender_id": "demo-tender",
+  "package_version": "v1",
+  "company_id": "demo-integrator",
+  "profile_version": "v1",
+  "policy_id": "tender-precheck",
+  "policy_version": "v1",
+  "reviewed_documents": [
+    {
+      "document_id": "technical-spec",
+      "document_version": "v1"
+    },
+    {
+      "document_id": "draft-contract",
+      "document_version": "v1"
+    }
+  ],
+  "findings": [
+    {
+      "criterion_id": "support_schedule",
+      "status": "mismatch",
+      "reason": "Требование заказчика: круглосуточная поддержка 24×7. Возможность компании: поддержка с 09:00 до 18:00, пн-пт, без доступа вне графика.",
+      "evidence": [
+        "technical-spec/v1#TS-2",
+        "demo-integrator/v1#support_schedule"
+      ],
+      "clarification_question": null
+    },
+    {
+      "criterion_id": "response_time",
+      "status": "needs_clarification",
+      "reason": "Срок реакции не найден в проверенных документах.",
+      "evidence": [
+        "draft-contract/v1#CT-2"
+      ],
+      "clarification_question": "Уточните срок реакции на обращение в полном пакете документов."
+    }
+  ],
+  "error": null
+}

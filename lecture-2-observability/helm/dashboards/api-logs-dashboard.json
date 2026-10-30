@@ -1,0 +1,54 @@
+{
+  "id": null,
+  "uid": "lab2-api-logs",
+  "title": "API logs",
+  "schemaVersion": 42,
+  "version": 1,
+  "editable": true,
+  "refresh": "10s",
+  "time": {
+    "from": "now-30m",
+    "to": "now"
+  },
+  "tags": [
+    "lab2",
+    "logs"
+  ],
+  "panels": [
+    {
+      "id": 1,
+      "title": "API JSON logs",
+      "type": "logs",
+      "datasource": {
+        "type": "loki",
+        "uid": "bg2s8fcynp79cf"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 16
+      },
+      "options": {
+        "showTime": true,
+        "showLabels": false,
+        "showCommonLabels": false,
+        "wrapLogMessage": true,
+        "prettifyLogMessage": true,
+        "sortOrder": "Descending",
+        "enableLogDetails": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "loki",
+            "uid": "bg2s8fcynp79cf"
+          },
+          "expr": "{namespace=\"labs\",container=\"lab2-api\"} | json",
+          "queryType": "range"
+        }
+      ]
+    }
+  ]
+}

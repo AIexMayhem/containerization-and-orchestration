@@ -1,0 +1,9 @@
+apiVersion: v2
+name: lab2-alerting
+description: Karma and an internal Alertmanager webhook receiver for Lab 2
+type: application
+version: 0.1.0
+appVersion: "v0.134"
+home: https://github.com/prymitive/karma
+sources:
+  - https://github.com/prymitive/karma

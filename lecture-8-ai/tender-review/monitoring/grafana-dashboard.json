@@ -1,0 +1,483 @@
+  {
+    "__inputs": [
+      {
+        "name": "DS_PROMETHEUS",
+        "label": "Prometheus",
+        "description": "Выберите существующий источник prometheus, который собирает lab8-tender-exporter.",
+        "type": "datasource",
+        "pluginId": "prometheus",
+        "pluginName": "Prometheus"
+      }
+    ],
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": {
+            "type": "grafana",
+            "uid": "-- Grafana --"
+          },
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "type": "dashboard"
+        }
+      ]
+    },
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 1,
+    "id": null,
+    "links": [],
+    "liveNow": false,
+    "panels": [
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${DS_PROMETHEUS}"
+        },
+        "pluginVersion": "13.3.0",
+        "interval": "15s",
+        "options": {
+          "colorMode": "background",
+          "graphMode": "none",
+          "justifyMode": "center",
+          "orientation": "horizontal",
+          "reduceOptions": {
+            "calcs": [
+              "last"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "textMode": "value_and_name",
+          "wideLayout": true
+        },
+        "id": 1,
+        "type": "stat",
+        "title": "Связь Prometheus с exporter",
+        "description": "Последний результат scrape. 1: endpoint /metrics доступен; 0: scrape не удался. Это не проверка готовности MCP.",
+        "gridPos": {
+          "h": 3,
+          "w": 24,
+          "x": 0,
+          "y": 0
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${DS_PROMETHEUS}"
+            },
+            "editorMode": "code",
+            "expr": "up{job=\"lab8-tender-exporter\"}",
+            "legendFormat": "exporter",
+            "range": false,
+            "instant": true,
+            "interval": "15s",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "decimals": 0,
+            "min": 0,
+            "max": 1,
+            "noValue": "Нет данных",
+            "mappings": [
+              {
+                "type": "value",
+                "options": {
+                  "0": {
+                    "text": "Нет связи",
+                    "color": "red",
+                    "index": 0
+                  },
+                  "1": {
+                    "text": "Scrape успешен",
+                    "color": "green",
+                    "index": 1
+                  }
+                }
+              }
+            ],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "red",
+                  "value": null
+                },
+                {
+                  "color": "green",
+                  "value": 1
+                }
+              ]
+            }
+          },
+          "overrides": []
+        }
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${DS_PROMETHEUS}"
+        },
+        "pluginVersion": "13.3.0",
+        "interval": "15s",
+        "options": {
+          "alignValue": "center",
+          "mergeValues": true,
+          "rowHeight": 0.65,
+          "showValue": "auto",
+          "legend": {
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none",
+            "hideZeros": false
+          }
+        },
+        "id": 2,
+        "type": "state-timeline",
+        "title": "Готовность зависимостей",
+        "description": "Четыре отдельные строки: documents, reference, n8n, ollama. Проверки выполняет exporter. Пробел означает отсутствие измерения.",
+        "gridPos": {
+          "h": 8,
+          "w": 24,
+          "x": 0,
+          "y": 3
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${DS_PROMETHEUS}"
+            },
+            "editorMode": "code",
+            "expr": "tender_dependency_ready{job=\"lab8-tender-exporter\"}",
+            "legendFormat": "{{component}}",
+            "range": true,
+            "instant": false,
+            "interval": "15s",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "decimals": 0,
+            "min": 0,
+            "max": 1,
+            "noValue": "Нет данных",
+            "mappings": [
+              {
+                "type": "value",
+                "options": {
+                  "0": {
+                    "text": "Недоступен",
+                    "color": "red",
+                    "index": 0
+                  },
+                  "1": {
+                    "text": "Готов",
+                    "color": "green",
+                    "index": 1
+                  }
+                }
+              }
+            ],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "red",
+                  "value": null
+                },
+                {
+                  "color": "green",
+                  "value": 1
+                }
+              ]
+            },
+            "custom": {
+              "axisPlacement": "auto",
+              "axisWidth": 110,
+              "fillOpacity": 80,
+              "lineWidth": 0,
+              "spanNulls": false,
+              "insertNulls": false
+            }
+          },
+          "overrides": []
+        }
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${DS_PROMETHEUS}"
+        },
+        "pluginVersion": "13.3.0",
+        "interval": "15s",
+        "options": {
+          "legend": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "displayMode": "table",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "multi",
+            "sort": "none",
+            "hideZeros": false
+          }
+        },
+        "id": 3,
+        "type": "timeseries",
+        "title": "Сборы по исходам, накопительно",
+        "description": "Всего завершений, сохранённых exporter в SQLite. Это не количество за выбранный период. complete подтверждает сбор источников, а не оценку тендера.",
+        "gridPos": {
+          "h": 9,
+          "w": 12,
+          "x": 0,
+          "y": 11
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${DS_PROMETHEUS}"
+            },
+            "editorMode": "code",
+            "expr": "tender_collection_runs_total{job=\"lab8-tender-exporter\"}",
+            "legendFormat": "{{outcome}}",
+            "range": true,
+            "instant": false,
+            "interval": "15s",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "decimals": 0,
+            "min": 0,
+            "noValue": "Нет данных",
+            "unit": "short",
+            "custom": {
+              "axisPlacement": "auto",
+              "axisLabel": "Сборы",
+              "axisCenteredZero": false,
+              "axisBorderShow": false,
+              "axisColorMode": "text",
+              "drawStyle": "line",
+              "fillOpacity": 10,
+              "gradientMode": "none",
+              "lineWidth": 2,
+              "pointSize": 4,
+              "showPoints": "auto",
+              "spanNulls": false,
+              "insertNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              },
+              "lineInterpolation": "stepAfter"
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "complete"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "mode": "fixed",
+                    "fixedColor": "green"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "incomplete"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "mode": "fixed",
+                    "fixedColor": "orange"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "error"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "mode": "fixed",
+                    "fixedColor": "red"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${DS_PROMETHEUS}"
+        },
+        "pluginVersion": "13.3.0",
+        "interval": "15s",
+        "options": {
+          "legend": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "displayMode": "table",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "multi",
+            "sort": "none",
+            "hideZeros": false
+          }
+        },
+        "id": 4,
+        "type": "timeseries",
+        "title": "Возраст незавершённого сбора",
+        "description": "Возраст самого старого start без finish. 0: незавершённых сборов нет. Не определяет причину задержки. Порог 180 секунд предварительный.",
+        "gridPos": {
+          "h": 9,
+          "w": 12,
+          "x": 12,
+          "y": 11
+        },
+        "targets": [
+          {
+            "datasource": {
+              "type": "prometheus",
+              "uid": "${DS_PROMETHEUS}"
+            },
+            "editorMode": "code",
+            "expr": "tender_collection_oldest_running_age_seconds{job=\"lab8-tender-exporter\"}",
+            "legendFormat": "Возраст",
+            "range": true,
+            "instant": false,
+            "interval": "15s",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "decimals": 0,
+            "min": 0,
+            "noValue": "Нет данных",
+            "unit": "s",
+            "custom": {
+              "axisPlacement": "auto",
+              "axisLabel": "Секунды",
+              "axisCenteredZero": false,
+              "axisBorderShow": false,
+              "axisColorMode": "text",
+              "drawStyle": "line",
+              "fillOpacity": 10,
+              "gradientMode": "none",
+              "lineWidth": 2,
+              "pointSize": 4,
+              "showPoints": "auto",
+              "spanNulls": false,
+              "insertNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "thresholdsStyle": {
+                "mode": "line"
+              },
+              "lineInterpolation": "linear"
+            },
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 180
+                }
+              ]
+            }
+          },
+          "overrides": []
+        }
+      }
+    ],
+    "preload": false,
+    "refresh": "15s",
+    "schemaVersion": 42,
+    "tags": [
+      "lab8",
+      "tender",
+      "mcp"
+    ],
+    "templating": {
+      "list": []
+    },
+    "time": {
+      "from": "now-30m",
+      "to": "now"
+    },
+    "timepicker": {
+      "refresh_intervals": [
+        "15s",
+        "30s",
+        "1m",
+        "5m"
+      ]
+    },
+    "timezone": "browser",
+    "title": "Lab 8: Tender precheck",
+    "uid": "lab8-tender-precheck",
+    "version": 1
+  }

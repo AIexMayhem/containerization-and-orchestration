@@ -1,0 +1,19 @@
+{
+  "tender_id": "demo-tender",
+  "package_version": "v1",
+  "synthetic": true,
+  "documents": [
+    {
+      "document_id": "technical-spec",
+      "document_version": "v1",
+      "path": "technical-spec.md",
+      "required": true
+    },
+    {
+      "document_id": "draft-contract",
+      "document_version": "v1",
+      "path": "draft-contract.md",
+      "required": true
+    }
+  ]
+}

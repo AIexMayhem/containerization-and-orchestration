@@ -1,0 +1,56 @@
+# Values for the official grafana/alloy chart.
+# Active release: monitoring/alloy. CRDs are unnecessary for API log collection.
+controller:
+  type: daemonset
+crds:
+  create: false
+alloy:
+  configMap:
+    content: |
+      logging {
+        level = "info"
+      }
+
+      discovery.kubernetes "api_pods" {
+        role = "pod"
+
+        namespaces {
+          names = ["labs"]
+        }
+
+        selectors {
+          role  = "pod"
+          label = "app=lab2-api"
+          field = "spec.nodeName=" + sys.env("HOSTNAME")
+        }
+      }
+
+      discovery.relabel "api_labels" {
+        targets = discovery.kubernetes.api_pods.targets
+
+        rule {
+          source_labels = ["__meta_kubernetes_namespace"]
+          target_label  = "namespace"
+        }
+
+        rule {
+          source_labels = ["__meta_kubernetes_pod_name"]
+          target_label  = "pod"
+        }
+
+        rule {
+          source_labels = ["__meta_kubernetes_pod_container_name"]
+          target_label  = "container"
+        }
+      }
+
+      loki.source.kubernetes "api_logs" {
+        targets = discovery.relabel.api_labels.output
+        forward_to = [loki.write.local.receiver]
+      }
+
+      loki.write "local" {
+        endpoint {
+          url = "http://loki-gateway.monitoring.svc.cluster.local:80/loki/api/v1/push"
+        }
+      }

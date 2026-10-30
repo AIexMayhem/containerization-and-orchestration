@@ -1,0 +1,16 @@
+replicas: 2
+image:
+  repository: lab2-api
+  tag: "1.0"
+  pullPolicy: IfNotPresent
+env:
+  OTEL_SERVICE_NAME: lab2-api
+  OTEL_EXPORTER_OTLP_ENDPOINT: http://lab2-jaeger.monitoring.svc.cluster.local:4318
+  OTEL_EXPORTER_OTLP_PROTOCOL: http/protobuf
+resources:
+  requests:
+    cpu: 100m
+    memory: 256Mi
+  limits:
+    cpu: "1"
+    memory: 750Mi

@@ -1,0 +1,274 @@
+{
+  "date": "2026-10-30",
+  "scope": "Полный локальный запуск оценки тендера в n8n до создания JSON-файла; сбор источников и мониторинг.",
+  "runtime": {
+    "n8n": "2.45.6",
+    "n8n_image_digest": "sha256:45edf89655fd66dd55ea9336c1791ad14777599fdbf6c5aec6db583ede99a40b",
+    "ollama": "0.40.13",
+    "model": "qwen3:8b",
+    "context_window": 16384,
+    "mcp_transport": "Streamable HTTP",
+    "prometheus_chart": "29.40.0",
+    "grafana": "13.3.0"
+  },
+  "executions": [
+    {
+      "execution_id": "16",
+      "started_at": 1793376748.983,
+      "finished_at": 1793376848.462,
+      "duration_seconds": 99.479,
+      "outcome": "incomplete",
+      "missing_documents": [
+        "draft-contract/v1"
+      ],
+      "gate": "stopped",
+      "observation": "Чтение договора не вызывалось. Заявление модели об ошибке сервера не подтверждено историей инструментов."
+    },
+    {
+      "execution_id": "17",
+      "started_at": 1793378281.771,
+      "finished_at": 1793378357.441,
+      "duration_seconds": 75.67,
+      "outcome": "complete",
+      "successful_tool_calls": 5,
+      "gate": "success"
+    },
+    {
+      "execution_id": "18",
+      "started_at": 1793379376.821,
+      "finished_at": 1793379450.086,
+      "duration_seconds": 73.265,
+      "outcome": "complete",
+      "successful_tool_calls": 5,
+      "gate": "success"
+    },
+    {
+      "execution_id": "19",
+      "started_at": 1793384749.702,
+      "finished_at": 1793384821.074,
+      "duration_seconds": 71.372,
+      "outcome": "complete",
+      "gate": "success"
+    },
+    {
+      "execution_id": "21",
+      "outcome": "complete",
+      "workflow_status": "success",
+      "started_at": 1793388175.062,
+      "finished_at": 1793388259.516,
+      "duration_seconds": 84.454,
+      "collection_duration_seconds": 65.867,
+      "successful_tool_calls": 5,
+      "last_node": "Assessment JSON",
+      "context_snapshot": "context-demo-tender-v1.json",
+      "assessment_file": "evaluation-demo-tender-v1.json"
+    }
+  ],
+  "exact_finish_redelivery": {
+    "checked_at_utc": "2026-10-30T16:34:04.800Z",
+    "source": "Контейнер n8n",
+    "event": {
+      "workflow": "tender-precheck",
+      "execution_id": "16",
+      "finished_at": 1793376848.462,
+      "outcome": "incomplete"
+    },
+    "http_status": 200,
+    "accepted": true,
+    "before": {
+      "execution_count": 1,
+      "complete": 0,
+      "incomplete": 1,
+      "error": 0,
+      "oldest_running_age_seconds": 0
+    },
+    "after": {
+      "execution_count": 1,
+      "complete": 0,
+      "incomplete": 1,
+      "error": 0,
+      "oldest_running_age_seconds": 0
+    },
+    "scope": "Точный повтор события; автоматический retry HTTP-узла не испытывался."
+  },
+  "monitoring": {
+    "cluster": "kind-labs",
+    "namespace": "default",
+    "prometheus_release_revision": 3,
+    "job": "lab8-tender-exporter",
+    "target": "http://host.docker.internal:9108/metrics",
+    "scrape_interval_seconds": 15,
+    "scrape_timeout_seconds": 5,
+    "targets_after_connection": {
+      "total": 14,
+      "up": 14,
+      "previous_13_preserved": true
+    },
+    "lab2_rules_preserved": [
+      "Lab2ApiUnavailable",
+      "Lab2High5xxRate",
+      "Lab2HighP95"
+    ],
+    "grafana_dashboard_uid": "lab8-tender-precheck",
+    "saved_dashboard_version_observed": 2,
+    "export": "../monitoring/grafana-dashboard.json",
+    "export_scope": "Конфигурация сохранённого дашборда с переносимым выбором datasource; подготовленные изменения оформления и freshness-фильтры не включены.",
+    "grafana_backend_queries": {
+      "http_status": 200,
+      "readiness_frames": 4,
+      "outcome_frames": 3,
+      "age_frames": 1,
+      "up_frames": 1
+    },
+    "observed_execution_19": {
+      "complete_before": 2,
+      "complete_after": 3,
+      "incomplete": 1,
+      "error": 0,
+      "sampled_age_peak_seconds": 61.67169,
+      "age_after_finish_seconds": 0,
+      "dependencies_ready": {
+        "documents": 1,
+        "reference": 1,
+        "n8n": 1,
+        "ollama": 1
+      }
+    },
+    "screenshots": [
+      "../screenshots/monitoring-dashboard.png",
+      "../screenshots/grafana-collection-running.png",
+      "../screenshots/grafana-collection-finished.png"
+    ]
+  },
+  "code_checks": {
+    "python": {
+      "passed": 126,
+      "duration_seconds": 4.44,
+      "temporary_local_ports_required": true
+    },
+    "javascript": {
+      "passed": 73,
+      "failed": 0
+    },
+    "ruff_check": "passed",
+    "ruff_format_check": {
+      "passed": true,
+      "files": 15
+    }
+  },
+  "not_exercised": [
+    "Реальный отказ и восстановление зависимости",
+    "Недоступность exporter",
+    "Автоматический retry HTTP-узла при сетевой ошибке"
+  ],
+  "limitations": [
+    "Полнота проверяется относительно доступного MCP манифеста, скрытые правами файлы не обнаруживаются.",
+    "Проверка контракта и ссылок не доказывает смысловую правильность вывода модели.",
+    "Метрики tender_collection_* относятся к сбору источников; complete не является бизнес-оценкой тендера.",
+    "Правила алертов Lab 8 и доставка уведомлений не настроены; выбранные метрики и условия описаны.",
+    "JSON-файл хранится в томе n8n_data и подчиняется очистке истории n8n; в reports сохранена точная копия созданного файла."
+  ],
+  "full_run": {
+    "execution_id": "21",
+    "workflow_name": "Lab 8: Tender review",
+    "workflow_id": "amUNPJJSWkAczvpf",
+    "status": "success",
+    "mode": "manual",
+    "started_at_utc": "2026-10-30T19:22:55.062Z",
+    "finished_at_utc": "2026-10-30T19:24:19.516Z",
+    "duration_seconds": 84.454,
+    "workflow_nodes": 14,
+    "last_node": "Assessment JSON",
+    "all_recorded_node_runs_succeeded": true,
+    "successful_mcp_calls": [
+      {
+        "tool": "MCP_Client1_get_evaluation_policy",
+        "input": {
+          "policy_id": "tender-precheck",
+          "policy_version": "v1"
+        },
+        "errored": false
+      },
+      {
+        "tool": "MCP_Client1_get_company_profile",
+        "input": {
+          "company_id": "demo-integrator",
+          "profile_version": "v1"
+        },
+        "errored": false
+      },
+      {
+        "tool": "MCP_Client_list_tender_documents",
+        "input": {
+          "tender_id": "demo-tender",
+          "package_version": "v1"
+        },
+        "errored": false
+      },
+      {
+        "tool": "MCP_Client_read_tender_document",
+        "input": {
+          "document_id": "technical-spec",
+          "document_version": "v1"
+        },
+        "errored": false
+      },
+      {
+        "tool": "MCP_Client_read_tender_document",
+        "input": {
+          "document_id": "draft-contract",
+          "document_version": "v1"
+        },
+        "errored": false
+      }
+    ],
+    "collection": {
+      "outcome": "complete",
+      "reviewed_documents": [
+        {
+          "document_id": "technical-spec",
+          "document_version": "v1"
+        },
+        {
+          "document_id": "draft-contract",
+          "document_version": "v1"
+        }
+      ],
+      "missing_documents": [],
+      "errors": [],
+      "duration_seconds": 65.867
+    },
+    "evaluation": {
+      "model": "qwen3:8b",
+      "done": true,
+      "done_reason": "stop",
+      "model_duration_seconds": 18.269767459,
+      "prompt_eval_count": 2812,
+      "eval_count": 340,
+      "findings": {
+        "support_schedule": "mismatch",
+        "response_time": "needs_clarification"
+      },
+      "validation": "passed",
+      "manual_source_comparison": "passed"
+    },
+    "file": {
+      "name": "demo-tender-v1-evaluation-21.json",
+      "mime_type": "application/json",
+      "bytes": 1307,
+      "sha256": "f6e7c0e50479109c85607d82b0051c852c76c7f392eb449d663add9c96b3b32f",
+      "repository_copy": "evaluation-demo-tender-v1.json",
+      "copied_from_actual_n8n_binary": true
+    },
+    "export": {
+      "file": "../workflow.json",
+      "copied_from_saved_workflow": true,
+      "owner_metadata_removed": true,
+      "credentials_selected_on_import": true
+    },
+    "screenshots": [
+      "../screenshots/workflow-complete.png",
+      "../screenshots/assessment-json.png"
+    ]
+  }
+}

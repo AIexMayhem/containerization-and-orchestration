@@ -1,0 +1,30 @@
+[
+  {
+    "name": "prometheus",
+    "version": "29.40.0",
+    "url": "https://github.com/prometheus-community/helm-charts/releases/download/prometheus-29.40.0/prometheus-29.40.0.tgz",
+    "api_asset_url": "https://api.github.com/repos/prometheus-community/helm-charts/releases/assets/689125282",
+    "sha256": "8af68f8b0b43fb11d32ca679574be129b0c947dcb5c9e270ef8e677a2e7f26ac"
+  },
+  {
+    "name": "grafana",
+    "version": "14.2.0",
+    "url": "https://github.com/grafana-community/helm-charts/releases/download/grafana-14.2.0/grafana-14.2.0.tgz",
+    "api_asset_url": "https://api.github.com/repos/grafana-community/helm-charts/releases/assets/682066057",
+    "sha256": "fd442e214d854ff514d64fb75f7f32f179b9e9a6a53bc3323aca7c5748ff188f"
+  },
+  {
+    "name": "loki",
+    "version": "20.2.0",
+    "url": "https://github.com/grafana-community/helm-charts/releases/download/loki-20.2.0/loki-20.2.0.tgz",
+    "sha256": "4886775896b04ff696a7620921a12de761c57b2e3182acc37639088f348e4f6b",
+    "api_asset_url": "https://api.github.com/repos/grafana-community/helm-charts/releases/assets/691528152"
+  },
+  {
+    "name": "alloy",
+    "version": "1.15.0",
+    "url": "https://github.com/grafana/helm-charts/releases/download/alloy-1.15.0/alloy-1.15.0.tgz",
+    "sha256": "2ecc96c05004cc01a45ab23cb390194ad5259ec9d02b42bf148d4468d013aaa3",
+    "api_asset_url": "https://api.github.com/repos/grafana/helm-charts/releases/assets/690025641"
+  }
+]

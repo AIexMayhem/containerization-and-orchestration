@@ -1,0 +1,75 @@
+# For prometheus-community/prometheus 29.40.0, including its Alertmanager chart.
+server:
+  retention: 15d
+  global:
+    scrape_interval: 1m
+    scrape_timeout: 10s
+    evaluation_interval: 15s
+
+serverFiles:
+  alerting_rules.yml:
+    groups:
+      - name: lab2-critical
+        interval: 15s
+        rules:
+          - alert: Lab2ApiUnavailable
+            expr: sum(up{namespace="labs",service="lab2-api"}) == 0 or absent(up{namespace="labs",service="lab2-api"})
+            for: 1m
+            labels:
+              severity: critical
+              service: lab2-api
+              namespace: labs
+            annotations:
+              summary: API has no reachable metrics targets
+              description: No API replica can be scraped for one minute. Users may have lost all access to the service.
+              action: Check Deployment replicas, ready endpoints, pod events and application startup; restore at least one healthy replica.
+          - alert: Lab2High5xxRate
+            expr: |
+              (
+                100 * sum(rate(http_errors_total{namespace="labs",service="lab2-api"}[5m]))
+                / sum(rate(http_requests_total{namespace="labs",service="lab2-api"}[5m]))
+              ) > 5
+              and sum(increase(http_requests_total{namespace="labs",service="lab2-api"}[5m])) >= 20
+            for: 1m
+            labels:
+              severity: critical
+              service: lab2-api
+              namespace: labs
+            annotations:
+              summary: More than 5 percent of API requests fail
+              description: Sustained 5xx responses prevent successful user operations. At least 20 requests in five minutes are required to evaluate the ratio.
+              action: Inspect error logs and trace IDs, identify the failing route and dependency, then roll back or fix the cause.
+          - alert: Lab2HighP95
+            expr: |
+              histogram_quantile(
+                0.95,
+                sum by (le) (rate(http_request_duration_seconds_bucket{namespace="labs",service="lab2-api"}[5m]))
+              ) > 1
+              and sum(increase(http_requests_total{namespace="labs",service="lab2-api"}[5m])) >= 20
+            for: 1m
+            labels:
+              severity: critical
+              service: lab2-api
+              namespace: labs
+            annotations:
+              summary: API p95 exceeds one second
+              description: Sustained high tail latency makes user operations slow. At least 20 requests in five minutes are required to evaluate latency.
+              action: Open slow traces, locate the long child span, inspect CPU and dependencies, and reduce the source of delay.
+
+alertmanager:
+  enabled: true
+  config:
+    enabled: true
+    global:
+      resolve_timeout: 1m
+    route:
+      receiver: lab2-webhook
+      group_by: [alertname, service]
+      group_wait: 10s
+      group_interval: 30s
+      repeat_interval: 5m
+    receivers:
+      - name: lab2-webhook
+        webhook_configs:
+          - url: http://lab2-alert-receiver.monitoring.svc.cluster.local:8080/alerts
+            send_resolved: true
