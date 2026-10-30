@@ -64,7 +64,7 @@ uv sync --frozen
 uv run --frozen python -m tender_mcp documents --data-root ../fixtures/tenders --allow-host host.docker.internal:8001
 uv run --frozen python -m tender_mcp reference --data-root ../fixtures/reference --allow-host host.docker.internal:8002
 uv run --frozen python -m tender_mcp.metrics
-``
+```
 
 </details>
 
