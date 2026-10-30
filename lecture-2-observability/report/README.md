@@ -17,14 +17,18 @@ Jaeger, Karma и приемник уведомлений установлены 
 В нем проверяли Services, связанные поды и порты, открывали port-forward
 для API, Prometheus, Grafana и приемника алертов.
 
-![Headlamp: Services кластера kind-labs](screenshots/09-headlamp-services.png)
+<img src="screenshots/09-headlamp-services.png" alt="Сервисы в Headlamp" width="1000">
+
+*Сервисы стенда в Headlamp. Здесь же открывали port-forward к компонентам.*
 
 У Service `lab2-api` порт 80 направлен на порт 8000 контейнера. На скриншоте
 показан проброс на локальный порт 8000; в `forward_stack.py` используется
 18080. Снимки сделаны до последнего rollout, поэтому имена подов отличаются
 от текущих.
 
-![Headlamp: карточка lab2-api и port-forward](screenshots/10-headlamp-api-service.png)
+<img src="screenshots/10-headlamp-api-service.png" alt="Service lab2-api" width="800">
+
+*Карточка `lab2-api`: поды за Service и проброс порта 80 → 8000.*
 
 ## Часть 1. Метрики
 
@@ -46,9 +50,13 @@ Jaeger, Karma и приемник уведомлений установлены 
 Проверили реакцию графиков: `/load` увеличивал число запросов в секунду,
 `/fail` повышал долю 5xx, `/slow` увеличивал p95 примерно до 2,4 с.
 
-![RED-дашборд: изменение RPS, доли 5xx и p95 под нагрузкой](screenshots/01-red-dashboard.jpg)
+<img src="screenshots/01-red-dashboard.jpg" alt="RED-дашборд" width="1000">
 
-![График RPS и Терминатор с поднятым большим пальцем](rps-terminator-meme.png)
+*RED-дашборд под тестовой нагрузкой: RPS, доля 5xx и p95 времени ответа.*
+
+<img src="screenshots/rps-terminator-meme.png" alt="RPS одобряет" width="1000">
+
+*Когда нагрузочный тест получил одобрение самого графика.*
 
 В контрольном прогоне за 210 секунд выполнили 630 запросов, по 210
 на `/health`, `/fail` и `/slow`. Транспортных повторов не было, p95 составил
@@ -75,7 +83,9 @@ Loki подключили к Grafana. После вызова `/fail` нашли
 | status="500"
 ```
 
-![Grafana Explore: ERROR-лог запроса /fail с trace_id](screenshots/02-api-error-correlated.jpg)
+<img src="screenshots/02-api-error-correlated.jpg" alt="Лог ошибки в Loki" width="1000">
+
+*Запрос `/fail` в Loki: HTTP 500, длительность и `trace_id` для перехода к трейсу.*
 
 В записи есть маршрут, статус, длительность и `trace_id`. Последний оставили
 полем JSON: уникальная индексируемая метка на каждый запрос увеличивала бы
@@ -90,18 +100,24 @@ Jaeger добавили в Grafana как отдельный источник д
 Операция ожидания выполняется внутри дочернего спана `slow-op`. В сохраненном
 трейсе он занимает 2,001 с, почти всю длительность запроса.
 
-![Jaeger: водопад GET /slow с дочерним спаном slow-op](screenshots/03-slow-waterfall.jpg)
+<img src="screenshots/03-slow-waterfall.jpg" alt="Трейс медленного запроса" width="1000">
+
+*Водопад `/slow` в Jaeger. Почти все время запроса занимает дочерний спан `slow-op`.*
 
 **`/fail`.** Спан содержит HTTP 500 и отмечен атрибутами
 `otel.status_code=ERROR`, `error=true`.
 
-![Jaeger: ошибочный спан GET /fail с HTTP 500](screenshots/04-fail-trace.jpg)
+<img src="screenshots/04-fail-trace.jpg" alt="Трейс запроса с ошибкой" width="1000">
+
+*Трейс `/fail`: ответ HTTP 500 и отметка об ошибке на спане.*
 
 **Связь с логами.** Из записи Loki взяли `trace_id`
 `b567b4d69c9a479a9d337e54d8acbf10` и открыли трейс через derived field
 в Grafana. Совпали ID запроса, маршрут `/fail` и статус ошибки.
 
-![Grafana Explore: лог Loki и соответствующий трейс Jaeger](screenshots/08-log-to-trace.jpg)
+<img src="screenshots/08-log-to-trace.jpg" alt="Переход от лога к трейсу" width="1000">
+
+*Один запрос в двух источниках: запись Loki и связанный с ней трейс Jaeger.*
 
 ## Часть 4. Алерты
 
@@ -123,18 +139,24 @@ Jaeger добавили в Grafana как отдельный источник д
 **`Lab2High5xxRate` и `Lab2HighP95`.** Для проверки подавали смешанный трафик
 на `/health`, `/fail` и `/slow`. Оба правила перешли в firing и появились в Karma.
 
-![Karma: активные Lab2High5xxRate и Lab2HighP95](screenshots/07-karma-traffic.jpg)
+<img src="screenshots/07-karma-traffic.jpg" alt="Алерты под нагрузкой" width="1000">
+
+*Karma после нагрузочного прогона: сработали правила на долю ошибок и p95.*
 
 **`Lab2ApiUnavailable`.** Масштабировали API до нуля. Алерт перешел в firing
 примерно через 150 секунд с учетом обновления targets, staleness и выдержки
 правила. При первоначальной проверке таймаут ожидания был слишком коротким;
 после его увеличения срабатывание подтвердили.
 
-![Alertmanager: три алерта у получателя lab2-webhook](screenshots/05-alertmanager-firing.jpg)
+<img src="screenshots/05-alertmanager-firing.jpg" alt="Срабатывания в Alertmanager" width="1000">
+
+*Три срабатывания в Alertmanager, направленные получателю `lab2-webhook`.*
 
 Все три срабатывания также отображаются в Karma:
 
-![Karma: три активных критических алерта](screenshots/07-karma-outage.jpg)
+<img src="screenshots/07-karma-outage.jpg" alt="Алерты при остановке API" width="1000">
+
+*После остановки API в Karma появился и алерт о недоступности сервиса.*
 
 В журнале receiver подтвердили получение `firing` от каждого правила.
 После восстановления двух реплик Prometheus снова показал `up=1`, пришли
@@ -149,4 +171,3 @@ Jaeger добавили в Grafana как отдельный источник д
 Helm charts, правила и настройки Grafana находятся в `helm/`, values для Loki
 и Alloy в `api/`, JSON дашбордов в `helm/dashboards/`.
 Jaeger и receiver хранят историю в памяти, Loki использует временный том.
-Постоянное хранение для этого стенда пока не настроено.
