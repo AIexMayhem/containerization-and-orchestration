@@ -64,31 +64,7 @@ uv sync --frozen
 uv run --frozen python -m tender_mcp documents --data-root ../fixtures/tenders --allow-host host.docker.internal:8001
 uv run --frozen python -m tender_mcp reference --data-root ../fixtures/reference --allow-host host.docker.internal:8002
 uv run --frozen python -m tender_mcp.metrics
-```
-
-В n8n на `http://localhost:5678` импортируем `workflow.json`. В узле `Ollama/Qwen3:8b` выбираем credentials с адресом `http://host.docker.internal:11434`, модель `qwen3:8b` и контекст `16384`. MCP-клиенты используют HTTP Streamable:
-
-- `http://host.docker.internal:8001/mcp`;
-- `http://host.docker.internal:8002/mcp`.
-
-Нажимаем **Execute workflow**. Результат скачиваем из `Assessment JSON → Binary → data`.
-
-В другом терминале из корня репозитория подключаем exporter к существующему Prometheus:
-
-```sh
-helm --kube-context kind-labs upgrade prometheus prometheus-community/prometheus \
-  --namespace default --version 29.40.0 --reuse-values \
-  --values lecture-8-ai/tender-review/monitoring/prometheus-values.yaml \
-  --wait --timeout 2m
-```
-
-Открываем доступ к Grafana и оставляем команду работающей:
-
-```sh
-kubectl --context kind-labs -n default port-forward service/grafana 3000:80
-```
-
-На `http://localhost:3000` импортируем `monitoring/grafana-dashboard.json`, выбираем источник Prometheus. Метрики exporter доступны на `http://127.0.0.1:9108/metrics`.
+``
 
 </details>
 
